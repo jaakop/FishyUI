@@ -1,0 +1,12 @@
+{
+    "name": "com.jaakkeli.fishyui",
+    "version": "0.0.1",
+    "displayName": "Fishy UI",
+    "description": "Themed UI library extending Unity UI",
+    "unity": "2022.3",
+    "author": {
+      "name": "Jaakko Sukuvaara",
+      "email": "jaakko@kronogra.fi",
+      "url": "https://jaakop.github.io/"
+    }
+  }
