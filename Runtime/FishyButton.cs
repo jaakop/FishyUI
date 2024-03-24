@@ -31,7 +31,14 @@ namespace FishyUI
             if (OverrideThemeWithLocal) return;
 
             ButtonTheme buttonTheme = theme;
-            if (buttonTheme == null) { buttonTheme = GetComponentInParent<ThemedCanvas>()?.theme?.buttonThemes[0]; }
+            if (buttonTheme == null)
+            {
+                var buttonThemes = GetComponentInParent<ThemedCanvas>()?.theme?.buttonThemes;
+                if (buttonThemes == null || buttonThemes.Length == 0) 
+                    return;
+
+                buttonTheme = buttonThemes[0];
+            }
 
             var img = GetComponent<Image>();
 
@@ -43,7 +50,7 @@ namespace FishyUI
 
 #if UNITY_EDITOR
         [UnityEditor.MenuItem("GameObject/UI/Fishy UI/Button")]
-        static private void CreateNewButtonGameObject(UnityEditor.MenuCommand menuCommand)
+        private static void CreateNewButtonGameObject(UnityEditor.MenuCommand menuCommand)
         {
             var go = new GameObject();
             go.AddComponent<RectTransform>();

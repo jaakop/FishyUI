@@ -9,5 +9,6 @@ namespace FishyUI
     public class UITheme : ScriptableObject
     {
         [SerializeField] public ButtonTheme[] buttonThemes;
+        [SerializeField] public PanelTheme[] panelThemes;
     }
 }

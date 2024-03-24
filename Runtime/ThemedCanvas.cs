@@ -9,6 +9,7 @@ namespace FishyUI
     public class ThemedCanvas : MonoBehaviour
     {
         public UITheme theme;
+        public bool OverrideWithLocals;
 
         private void Awake()
         {
@@ -34,6 +35,9 @@ namespace FishyUI
 
         private void Configure()
         {
+            if(OverrideWithLocals) { return; }
+
+            GetComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         }
 
         private void OnValidate()
