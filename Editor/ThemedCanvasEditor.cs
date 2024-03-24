@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ThemedCanvas))]
-public class ThemedCanvasEditor : Editor
+namespace FishyUI
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(ThemedCanvas))]
+    public class ThemedCanvasEditor : Editor
     {
-        base.OnInspectorGUI();
-        if(GUILayout.Button("Configure"))
+        public override void OnInspectorGUI()
         {
-            serializedObject.ApplyModifiedProperties();
-            (target as ThemedCanvas).Init();
+            base.OnInspectorGUI();
+            if (GUILayout.Button("Configure"))
+            {
+                serializedObject.ApplyModifiedProperties();
+                (target as ThemedCanvas).Init();
+            }
         }
     }
 }

@@ -4,33 +4,37 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.UI;
 
-[CustomEditor(typeof(FishyButton), true)]
-[CanEditMultipleObjects]
-public class FishyButtonEditor : ButtonEditor
+
+namespace FishyUI
 {
-    SerializedProperty theme;
-    SerializedProperty overrideBool;
-
-    protected override void OnEnable()
+    [CustomEditor(typeof(FishyButton), true)]
+    [CanEditMultipleObjects]
+    public class FishyButtonEditor : ButtonEditor
     {
-        base.OnEnable();
-        theme = serializedObject.FindProperty("theme");
-        overrideBool = serializedObject.FindProperty("OverrideThemeWithLocal");
-    }
+        SerializedProperty theme;
+        SerializedProperty overrideBool;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            theme = serializedObject.FindProperty("theme");
+            overrideBool = serializedObject.FindProperty("OverrideThemeWithLocal");
+        }
 
 
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
 
-        EditorGUILayout.PropertyField(theme);
-        EditorGUILayout.PropertyField(overrideBool);
+            EditorGUILayout.PropertyField(theme);
+            EditorGUILayout.PropertyField(overrideBool);
 
-        EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
-        serializedObject.ApplyModifiedProperties();
-        (target as FishyButton).ApplyTheme();
+            serializedObject.ApplyModifiedProperties();
+            (target as FishyButton).ApplyTheme();
 
-        base.OnInspectorGUI();
+            base.OnInspectorGUI();
+        }
     }
 }

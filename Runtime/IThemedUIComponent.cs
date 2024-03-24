@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IThemedUIComponent
+namespace FishyUI
 {
-    void ApplyTheme();
+    public interface IThemedUIComponent
+    {
+        void ApplyTheme();
+    }
 }

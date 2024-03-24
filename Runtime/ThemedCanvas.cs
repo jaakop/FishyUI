@@ -4,39 +4,42 @@ using UnityEditor.TerrainTools;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ThemedCanvas : MonoBehaviour
+namespace FishyUI
 {
-    public UITheme theme;
-
-    private void Awake()
+    public class ThemedCanvas : MonoBehaviour
     {
-        Init();
-    }
+        public UITheme theme;
 
-    public void Init()
-    {
-        Setup();
-        Configure();
-        Canvas.ForceUpdateCanvases();
-
-        foreach (var component in GetComponentsInChildren<IThemedUIComponent>())
+        private void Awake()
         {
-            component.ApplyTheme();
+            Init();
         }
+
+        public void Init()
+        {
+            Setup();
+            Configure();
+            Canvas.ForceUpdateCanvases();
+
+            foreach (var component in GetComponentsInChildren<IThemedUIComponent>())
+            {
+                component.ApplyTheme();
+            }
+        }
+
+        private void Setup()
+        {
+
+        }
+
+        private void Configure()
+        {
+        }
+
+        private void OnValidate()
+        {
+            Init();
+        }
+
     }
-
-    private void Setup()
-    {
-
-    }
-
-    private void Configure()
-    {
-    }
-
-    private void OnValidate()
-    {
-        Init();
-    }
-
 }

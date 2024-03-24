@@ -6,81 +6,84 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-[AddComponentMenu("UI/Fishy UI/Button")]
-public class FishyButton : Button, IThemedUIComponent
+namespace FishyUI
 {
-    public ButtonTheme theme;
-    public bool OverrideThemeWithLocal;
-
-    protected override void Awake()
+    [AddComponentMenu("UI/Fishy UI/Button")]
+    public class FishyButton : Button, IThemedUIComponent
     {
-        ApplyTheme();
-    }
+        public ButtonTheme theme;
+        public bool OverrideThemeWithLocal;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
+        protected override void Awake()
+        {
+            ApplyTheme();
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        // Start is called before the first frame update
+        void Start()
+        {
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+        public void ApplyTheme()
+        {
+            if (OverrideThemeWithLocal) return;
+
+            ButtonTheme buttonTheme = theme;
+            if (buttonTheme == null) { buttonTheme = GetComponentInParent<ThemedCanvas>()?.theme?.buttonThemes[0]; }
+
+            var img = GetComponent<Image>();
+
+            img.sprite = buttonTheme.Sprite;
+            img.type = buttonTheme.imageType;
+            img.color = buttonTheme.Color;
+            img.pixelsPerUnitMultiplier = buttonTheme.imagePixelsPerUnitMultiplier;
+        }
 
 #if UNITY_EDITOR
-    [UnityEditor.MenuItem("GameObject/UI/Fishy UI/Button")]
-    static private void CreateNewButtonGameObject(UnityEditor.MenuCommand menuCommand)
-    {
-        var go = new GameObject();
-        go.AddComponent<RectTransform>();
-        go.AddComponent<CanvasRenderer>();
-        go.AddComponent<Image>();
-        go.transform.SetParent((menuCommand.context as GameObject).transform);
-        go.name = "Button"; 
-        (go.transform as RectTransform).anchoredPosition = Vector3.zero;
+        [UnityEditor.MenuItem("GameObject/UI/Fishy UI/Button")]
+        static private void CreateNewButtonGameObject(UnityEditor.MenuCommand menuCommand)
+        {
+            var go = new GameObject();
+            go.AddComponent<RectTransform>();
+            go.AddComponent<CanvasRenderer>();
+            go.AddComponent<Image>();
+            go.transform.SetParent((menuCommand.context as GameObject).transform);
+            go.name = "Button";
+            (go.transform as RectTransform).anchoredPosition = Vector3.zero;
 
-        var txtGo = new GameObject();
-        var txtTransform = txtGo.AddComponent<RectTransform>();
+            var txtGo = new GameObject();
+            var txtTransform = txtGo.AddComponent<RectTransform>();
 
-        txtGo.AddComponent<CanvasRenderer>();
-        txtGo.transform.SetParent(go.transform);
-        txtGo.name = "Text";
+            txtGo.AddComponent<CanvasRenderer>();
+            txtGo.transform.SetParent(go.transform);
+            txtGo.name = "Text";
 
-        var txtC = txtGo.AddComponent<TextMeshProUGUI>();
-        txtC.text = "Button";
-        txtC.fontSize = 24;
-        txtC.alignment = TextAlignmentOptions.Center;
-        txtC.color = new Color(50 / 255f, 50 / 255f, 50 / 255f);
+            var txtC = txtGo.AddComponent<TextMeshProUGUI>();
+            txtC.text = "Button";
+            txtC.fontSize = 24;
+            txtC.alignment = TextAlignmentOptions.Center;
+            txtC.color = new Color(50 / 255f, 50 / 255f, 50 / 255f);
 
-        txtTransform.offsetMax = new Vector2(0, 0);
-        txtTransform.offsetMin = new Vector2(0, 0);
-        txtTransform.anchorMax = new Vector2(1, 1);
-        txtTransform.anchorMin = new Vector2(0, 0);
+            txtTransform.offsetMax = new Vector2(0, 0);
+            txtTransform.offsetMin = new Vector2(0, 0);
+            txtTransform.anchorMax = new Vector2(1, 1);
+            txtTransform.anchorMin = new Vector2(0, 0);
 
-        go.AddComponent<FishyButton>();
+            go.AddComponent<FishyButton>();
 
-    }
+        }
 #endif
 
-    public void ApplyTheme()
-    {
-        if (OverrideThemeWithLocal) return;
-
-        ButtonTheme buttonTheme = theme;
-        if (buttonTheme == null) { buttonTheme = GetComponentInParent<ThemedCanvas>()?.theme?.buttonThemes[0]; }
-
-        var img = GetComponent<Image>();
-
-        img.sprite = buttonTheme.Sprite;
-        img.type = buttonTheme.imageType;
-        img.color = buttonTheme.Color;
-        img.pixelsPerUnitMultiplier = buttonTheme.imagePixelsPerUnitMultiplier;
-    }
-
-    protected override void OnValidate()
-    {
-        base.OnValidate();
-        ApplyTheme();
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+            ApplyTheme();
+        }
     }
 }
