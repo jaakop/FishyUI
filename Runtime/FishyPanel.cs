@@ -8,7 +8,8 @@ namespace FishyUI
 {
     public class FishyPanel : MonoBehaviour, IThemedUIComponent
     {
-        public PanelTheme theme;
+        public int themeIndex = 0;
+        public PanelTheme overrideTheme;
         public bool OverrideThemeWithLocal;
 
         protected void Awake()
@@ -20,14 +21,20 @@ namespace FishyUI
         {
             if (OverrideThemeWithLocal) return;
 
-            PanelTheme theme = this.theme;
+            var theme = overrideTheme;
             if (theme == null)
             {
                 var panelThemes= GetComponentInParent<FishyCanvas>()?.theme.panelThemes;
                 if(panelThemes == null ||panelThemes.Length == 0 )
                     return;
 
-                theme = panelThemes[0];
+                if (panelThemes.Length <= themeIndex)
+                {
+                    theme = panelThemes[0];
+                    Debug.LogError($"Could not find theme with index {themeIndex} from the themed canvas. Using default default theme");
+                }
+                else
+                    theme = panelThemes[themeIndex];
             }
 
             var img = GetComponent<Image>();

@@ -7,7 +7,8 @@ namespace FishyUI
 {
     public class FishyText : TextMeshProUGUI, IThemedUIComponent
     {
-        public TextTheme theme;
+        public int themeIndex = 0;
+        public TextTheme overrideTheme;
         public bool OverrideThemeWithLocal;
 
         protected override void Awake()
@@ -20,14 +21,20 @@ namespace FishyUI
         {
             if (OverrideThemeWithLocal) return;
 
-            TextTheme theme = this.theme;
+            TextTheme theme = this.overrideTheme;
             if (theme == null)
             {
                 var textThemes = GetComponentInParent<FishyCanvas>()?.theme.textThemes;
                 if (textThemes == null || textThemes.Length == 0)
                     return;
 
-                theme = textThemes[0];
+                if (textThemes.Length <= themeIndex)
+                {
+                    theme = textThemes[0];
+                    Debug.LogError($"Could not find theme with index {themeIndex} from the themed canvas. Using default default theme");
+                }
+                else
+                    theme = textThemes[themeIndex];
 
                 this.font = theme.Font;
                 this.fontSize = theme.FontSize;

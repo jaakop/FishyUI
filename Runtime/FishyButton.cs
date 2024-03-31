@@ -7,7 +7,8 @@ namespace FishyUI
     [AddComponentMenu("UI/Fishy UI/Button")]
     public class FishyButton : Button, IThemedUIComponent
     {
-        public ButtonTheme theme;
+        public int themeIndex = 0;
+        public ButtonTheme overrideTheme;
         public bool OverrideThemeWithLocal;
 
         protected override void Awake()
@@ -19,22 +20,29 @@ namespace FishyUI
         {
             if (OverrideThemeWithLocal) return;
 
-            ButtonTheme buttonTheme = theme;
-            if (buttonTheme == null)
+            var theme = overrideTheme;
+            if (theme == null)
             {
                 var buttonThemes = GetComponentInParent<FishyCanvas>()?.theme?.buttonThemes;
                 if (buttonThemes == null || buttonThemes.Length == 0) 
                     return;
 
-                buttonTheme = buttonThemes[0];
+
+                if (buttonThemes.Length <= themeIndex)
+                {
+                    theme = buttonThemes[0];
+                    Debug.LogError($"Could not find theme with index {themeIndex} from the themed canvas. Using default default theme");
+                }
+                else
+                    theme = buttonThemes[themeIndex];
             }
 
             var img = GetComponent<Image>();
 
-            img.sprite = buttonTheme.Sprite;
-            img.type = buttonTheme.imageType;
-            img.color = buttonTheme.Color;
-            img.pixelsPerUnitMultiplier = buttonTheme.imagePixelsPerUnitMultiplier;
+            img.sprite = theme.Sprite;
+            img.type = theme.imageType;
+            img.color = theme.Color;
+            img.pixelsPerUnitMultiplier = theme.imagePixelsPerUnitMultiplier;
         }
 
 #if UNITY_EDITOR

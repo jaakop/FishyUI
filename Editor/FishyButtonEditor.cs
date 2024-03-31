@@ -11,13 +11,15 @@ namespace FishyUI
     [CanEditMultipleObjects]
     public class FishyButtonEditor : ButtonEditor
     {
-        SerializedProperty theme;
+        SerializedProperty themeIndex;
+        SerializedProperty overrideTheme;
         SerializedProperty overrideBool;
 
         protected override void OnEnable()
         {
             base.OnEnable();
-            theme = serializedObject.FindProperty("theme");
+            themeIndex = serializedObject.FindProperty("themeIndex");
+            overrideTheme = serializedObject.FindProperty("overrideTheme");
             overrideBool = serializedObject.FindProperty("OverrideThemeWithLocal");
         }
 
@@ -26,7 +28,8 @@ namespace FishyUI
         {
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(theme);
+            EditorGUILayout.PropertyField(themeIndex);
+            EditorGUILayout.PropertyField(overrideTheme);
             EditorGUILayout.PropertyField(overrideBool);
 
             EditorGUILayout.Space();
