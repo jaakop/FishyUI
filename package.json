@@ -1,6 +1,6 @@
 {
     "name": "com.jaakkeli.fishyui",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "displayName": "Fishy UI",
     "description": "Themed UI library extending Unity UI",
     "unity": "2022.3",
