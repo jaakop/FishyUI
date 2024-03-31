@@ -23,7 +23,7 @@ namespace FishyUI
             PanelTheme theme = this.theme;
             if (theme == null)
             {
-                var panelThemes= GetComponentInParent<ThemedCanvas>()?.theme.panelThemes;
+                var panelThemes= GetComponentInParent<FishyCanvas>()?.theme.panelThemes;
                 if(panelThemes == null ||panelThemes.Length == 0 )
                     return;
 

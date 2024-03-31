@@ -3,8 +3,8 @@ using UnityEditor;
 
 namespace FishyUI
 {
-    [CustomEditor(typeof(ThemedCanvas))]
-    public class ThemedCanvasEditor : Editor
+    [CustomEditor(typeof(FishyCanvas))]
+    public class FishyCanvasEditor : Editor
     {
         public override void OnInspectorGUI()
         {
@@ -12,7 +12,7 @@ namespace FishyUI
             if (GUILayout.Button("Configure"))
             {
                 serializedObject.ApplyModifiedProperties();
-                (target as ThemedCanvas).Init();
+                (target as FishyCanvas).Init();
             }
         }
     }

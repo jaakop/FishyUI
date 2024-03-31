@@ -1,55 +1,55 @@
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using UnityEditor.TerrainTools;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace FishyUI
 {
-    [AddComponentMenu("UI/Fishy UI/Button")]
-    public class FishyButton : Button, IThemedUIComponent
+    public class FishyCanvas : MonoBehaviour
     {
-        public ButtonTheme theme;
-        public bool OverrideThemeWithLocal;
+        public UITheme theme;
+        public bool OverrideWithLocals;
 
-        protected override void Awake()
+        private void Awake()
         {
-            ApplyTheme();
+            Init();
         }
 
-        // Start is called before the first frame update
-        void Start()
+        public void Init()
         {
-        }
+            Setup();
+            Configure();
+            Canvas.ForceUpdateCanvases();
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-        public void ApplyTheme()
-        {
-            if (OverrideThemeWithLocal) return;
-
-            ButtonTheme buttonTheme = theme;
-            if (buttonTheme == null)
+            foreach (var component in GetComponentsInChildren<IThemedUIComponent>())
             {
-                var buttonThemes = GetComponentInParent<FishyCanvas>()?.theme?.buttonThemes;
-                if (buttonThemes == null || buttonThemes.Length == 0) 
-                    return;
-
-                buttonTheme = buttonThemes[0];
+                component.ApplyTheme();
             }
-
-            var img = GetComponent<Image>();
-
-            img.sprite = buttonTheme.Sprite;
-            img.type = buttonTheme.imageType;
-            img.color = buttonTheme.Color;
-            img.pixelsPerUnitMultiplier = buttonTheme.imagePixelsPerUnitMultiplier;
         }
+
+        private void Setup()
+        {
+
+        }
+
+        private void Configure()
+        {
+            if(OverrideWithLocals) { return; }
+
+            GetComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        }
+
+        private void OnValidate()
+        {
+            Init();
+        }
+
+
 
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("GameObject/UI/Fishy UI/Button")]
+        [UnityEditor.MenuItem("GameObject/UI/Fishy UI/Canvas")]
         private static void CreateNewButtonGameObject(UnityEditor.MenuCommand menuCommand)
         {
             var go = new GameObject();
@@ -83,10 +83,5 @@ namespace FishyUI
         }
 #endif
 
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-            ApplyTheme();
-        }
     }
 }
