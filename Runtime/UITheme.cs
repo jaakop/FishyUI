@@ -10,5 +10,6 @@ namespace FishyUI
     {
         [SerializeField] public ButtonTheme[] buttonThemes;
         [SerializeField] public PanelTheme[] panelThemes;
+        [SerializeField] public TextTheme[] textThemes;
     }
 }

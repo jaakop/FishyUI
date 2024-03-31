@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace FishyUI
 {
-    public class FishyPanel : MonoBehaviour, IThemedUIComponent
+    public class FishyText : TextMeshProUGUI, IThemedUIComponent
     {
-        public PanelTheme theme;
+        public TextTheme theme;
         public bool OverrideThemeWithLocal;
 
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             ApplyTheme();
         }
 
@@ -20,26 +20,23 @@ namespace FishyUI
         {
             if (OverrideThemeWithLocal) return;
 
-            PanelTheme theme = this.theme;
+            TextTheme theme = this.theme;
             if (theme == null)
             {
-                var panelThemes= GetComponentInParent<FishyCanvas>()?.theme.panelThemes;
-                if(panelThemes == null ||panelThemes.Length == 0 )
+                var textThemes = GetComponentInParent<FishyCanvas>()?.theme.textThemes;
+                if (textThemes == null || textThemes.Length == 0)
                     return;
 
-                theme = panelThemes[0];
+                theme = textThemes[0];
+
+                this.font = theme.Font;
+                this.fontSize = theme.FontSize;
+                this.color = theme.Color;
             }
-
-            var img = GetComponent<Image>();
-
-            img.sprite = theme.BackgroundImage;
-            img.type = theme.imageType;
-            img.color = theme.Color;
-            img.pixelsPerUnitMultiplier = theme.imagePixelsPerUnitMultiplier;
         }
 
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("GameObject/UI/Fishy UI/Text")]
+        [UnityEditor.MenuItem("GameObject/UI/Fishy UI/Panel")]
         private static void CreateNewButtonGameObject(UnityEditor.MenuCommand menuCommand)
         {
             var go = new GameObject();
@@ -54,13 +51,14 @@ namespace FishyUI
             goTransform.anchorMax = new Vector2(1, 1);
             goTransform.anchorMin = new Vector2(0, 0);
 
-            go.AddComponent<FishyText>().text = "Fishy text";
+            go.AddComponent<FishyText>();
 
         }
 #endif
 
-        protected void OnValidate()
+        protected override void OnValidate()
         {
+            base.OnValidate();
             ApplyTheme();
         }
     }
